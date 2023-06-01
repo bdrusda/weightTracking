@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+const yellow = '#ffd35c';
+
 export const styles = StyleSheet.create({
 	container: {
 		padding: 24,
@@ -12,7 +14,7 @@ export const styles = StyleSheet.create({
 	headerText: {
 		fontWeight: 'bold',
 		fontSize: 25,
-		color: '#ffd35c',
+		color: yellow,
 		letterSpacing: 1,
 		textAlign: 'center',
 		paddingRight: 40,
