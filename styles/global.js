@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-const yellow = '#ffd35c';
+export const yellow = '#ffd35c';
+export const blue = '#69e';
 
 export const styles = StyleSheet.create({
 	container: {

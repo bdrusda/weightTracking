@@ -1,8 +1,31 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Dimensions } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import WeightListDisplay from '../partials/weightListDisplay';
-import { LineChart } from 'react-native-chart-kit';
+
+import {
+	Chart as ChartJS,
+	LineElement,
+	CategoryScale,
+	LinearScale,
+	TimeScale,
+	PointElement,
+	Title,
+	Tooltip,
+	Legend,
+} from 'chart.js';
+import 'chartjs-adapter-date-fns';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+	LineElement,
+	CategoryScale,
+	LinearScale,
+	TimeScale,
+	PointElement,
+	Title,
+	Tooltip,
+	Legend
+);
 
 export default function Home({ navigation }) {
 	const [entries, setEntries] = useState([
@@ -12,47 +35,50 @@ export default function Home({ navigation }) {
 		{ key: 4, weight: 166.2, date: new Date('05/30/23') },
 	]);
 
-	const dates = entries.map((entry) =>
-		entry.date.toLocaleDateString(undefined, {
-			year: 'numeric',
-			month: '2-digit',
-		})
-	);
-	const weights = entries.map((entry) => entry.weight);
+	entries.sort((a, b) => b.date - a.date);
+	const labels = entries.map((entry) => entry.date);
+	const values = entries.map((entry) => entry.weight);
+
 	const data = {
-		labels: [dates],
+		labels: labels,
 		datasets: [
 			{
-				data: weights,
-				strokeWidth: 2,
+				label: 'Weight',
+				data: values,
+				borderColor: '#69e',
+				backgroundColor: '#4785eb',
 			},
 		],
 	};
 
+	const options = {
+		responsive: true,
+		plugins: {
+			legend: {
+				position: 'top',
+			},
+			title: {
+				display: true,
+				text: 'Chart.js Line Chart',
+			},
+		},
+		scales: {
+			x: {
+				type: 'time',
+				time: {
+					unit: 'day',
+				},
+			},
+
+			y: {
+				beginAtZero: false,
+			},
+		},
+	};
+
 	return (
 		<View>
-			<LineChart
-				data={data}
-				width={Dimensions.get('window').width - 40} // from react-native
-				height={220}
-				yAxisLabel={''}
-				chartConfig={{
-					backgroundColor: '#69e',
-					backgroundGradientFrom: '#303030',
-					backgroundGradientTo: '#303030',
-					decimalPlaces: 2, // optional, defaults to 2dp
-					color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-					style: {
-						borderRadius: 16,
-					},
-				}}
-				bezier
-				style={{
-					marginVertical: 8,
-					borderRadius: 16,
-					paddingHorizontal: 20,
-				}}
-			/>
+			<Line options={options} data={data} />;
 			<ScrollView>
 				{entries
 					.sort((a, b) => b.date - a.date)

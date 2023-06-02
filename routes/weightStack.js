@@ -3,6 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import Home from '../screens/home';
 import Header from '../shared/header';
 import React from 'react';
+import { blue, styles } from '../styles/global';
 
 const screens = {
 	Home: {
@@ -15,7 +16,7 @@ const screens = {
 
 const HomeStack = createStackNavigator(screens, {
 	defaultNavigationOptions: {
-		headerStyle: { backgroundColor: '#69e' },
+		headerStyle: { backgroundColor: blue },
 		headerTintColor: '#444',
 	},
 });
