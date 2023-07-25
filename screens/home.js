@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import {
+	View,
+	ScrollView,
+	TextInput,
+	TouchableOpacity,
+	Text,
+} from 'react-native';
 import WeightListDisplay from '../partials/weightListDisplay';
 
 import {
@@ -15,6 +21,7 @@ import {
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2';
+import { styles } from '../styles/global';
 
 ChartJS.register(
 	LineElement,
@@ -55,6 +62,8 @@ export default function Home({ navigation }) {
 		{ key: 24, weight: 171.4, date: new Date('07/22/23') },
 	]);
 
+	const [weightInput, setWeightInput] = useState('');
+
 	entries.sort((a, b) => b.date - a.date);
 	const labels = entries.map((entry) => entry.date);
 	const values = entries.map((entry) => entry.weight);
@@ -75,30 +84,51 @@ export default function Home({ navigation }) {
 		responsive: true,
 		plugins: {
 			legend: {
-				position: 'top',
+				display: false,
 			},
 			title: {
 				display: true,
-				text: 'Chart.js Line Chart',
+				text: 'Weight Tracking',
 			},
 		},
 		scales: {
 			x: {
 				type: 'time',
 				time: {
-					unit: 'day',
+					unit: 'month',
 				},
 			},
-
 			y: {
 				beginAtZero: false,
+				min: 160,
+				max: 175,
+				ticks: {
+					callback: function (val, index) {
+						return index % 5 === 0 ? this.getLabelForValue(val) : '';
+					},
+					color: 'black',
+				},
 			},
 		},
 	};
 
 	return (
 		<View>
-			<Line options={options} data={data} />;
+			<View style={styles.weightGraph}>
+				<Line options={options} data={data} />
+			</View>
+			<View style={styles.weightInputSection}>
+				<TextInput
+					style={styles.weightInput}
+					keyboardType='numeric'
+					onChangeText={(text) => setWeightInput(text)}
+				/>
+				<TouchableOpacity
+					style={styles.submitButton}
+					onPress={() => saveNewWeight(weightInput)}>
+					<Text style={styles.submitButtonLabel}>Submit</Text>
+				</TouchableOpacity>
+			</View>
 			<ScrollView>
 				{entries
 					.sort((a, b) => b.date - a.date)
