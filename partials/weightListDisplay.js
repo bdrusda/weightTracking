@@ -1,11 +1,10 @@
 import Card from '../shared/card';
-import { styles } from '../styles/global';
-import { Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default function WeightListDisplay(props) {
 	const entry = props.entry;
 	return (
-		<Card key={entry.key}>
+		<Card key={entry.key} styles={styles.weightListDisplay}>
 			<TouchableOpacity>
 				<Text>{entry.weight}</Text>
 				<Text value={entry.date.toString()}>
@@ -15,3 +14,10 @@ export default function WeightListDisplay(props) {
 		</Card>
 	);
 }
+
+const styles = StyleSheet.create({
+	gridRweightListDisplay: {
+		width: '100%',
+		margin: 'auto',
+	},
+});

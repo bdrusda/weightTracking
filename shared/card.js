@@ -20,11 +20,14 @@ const styles = StyleSheet.create({
 		shadowColor: '#333',
 		shadowOpacity: 0.3,
 		shadowRadius: 2,
-		marginHorizontal: 20,
-		marginVertical: 8,
+		marginHorizontal: 5,
+		marginTop: 5,
+		display: 'inline',
+		flex: 1,
 	},
 	cardContent: {
 		marginHorizontal: 20,
 		marginVertical: 20,
+		textAlign: 'center',
 	},
 });

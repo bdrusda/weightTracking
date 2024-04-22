@@ -7,6 +7,7 @@ import {
 	Text,
 } from 'react-native';
 import WeightListDisplay from '../partials/weightListDisplay';
+import CustomGrid from '../partials/customGrid';
 
 import {
 	Chart as ChartJS,
@@ -112,6 +113,13 @@ export default function Home({ navigation }) {
 		},
 	};
 
+	const saveNewWeight = (weight) => {
+		// TODO clear input
+		// TODO do validation to make sure this is a number
+		if (isNaN(weight)) return;
+		setEntries([...entries, weight]);
+	};
+
 	return (
 		<View>
 			<View style={styles.weightGraph}>
@@ -129,13 +137,7 @@ export default function Home({ navigation }) {
 					<Text style={styles.submitButtonLabel}>Submit</Text>
 				</TouchableOpacity>
 			</View>
-			<ScrollView>
-				{entries
-					.sort((a, b) => b.date - a.date)
-					.map((entry) => {
-						return <WeightListDisplay entry={entry} />;
-					})}
-			</ScrollView>
+			<CustomGrid entries={entries} columns={5} />
 		</View>
 	);
 }
